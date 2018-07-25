@@ -19,6 +19,14 @@ class AthleteController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+          'name' => 'required',
+          'dob' => 'required|email',
+          'age' => 'required|numeric',
+          'height' => 'required|numeric',
+          'weight' => 'required|numeric',
+        ]);
+
         return Athlete::create($request->all());
     }
 

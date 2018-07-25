@@ -19,6 +19,10 @@ class SportController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+          'name' => 'required'
+        ]);
+
         return Sport::create($request->all());
     }
 

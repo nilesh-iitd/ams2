@@ -20,6 +20,13 @@ class ATSController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+          'dop' => 'required',
+          'aid' => 'required|numeric',
+          'tid' => 'required|numeric',
+          'sid' => 'required|numeric',
+        ]);
+
         return ATS::create($request->all());
     }
 

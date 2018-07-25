@@ -19,6 +19,11 @@ class TeamController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+          'name' => 'required',
+          'logo' => 'required|url',
+        ]);
+
         return Team::create($request->all());
     }
 

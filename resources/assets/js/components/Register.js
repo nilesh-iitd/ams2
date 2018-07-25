@@ -85,7 +85,7 @@ export default class Register extends Component {
               />
             </FormGroup>
             <FormGroup controlId="password" bsSize="large">
-              <ControlLabel>Password</ControlLabel>
+              <ControlLabel>Password (Min: 6 characters)</ControlLabel>
               <FormControl
                   value={this.state.password}
                   onChange={this.handleChange}

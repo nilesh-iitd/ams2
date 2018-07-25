@@ -1,27 +1,49 @@
 # AMS
 Athlete Management System
 
+# Pre-requisite
+````
+* PHP 7.2.2 [ GET: http://php.net/releases/7_2_2.php ]
+* composer 1.6.3 [ GET: https://getcomposer.org/download/ ]
+* npm 6.2.0 [ GET: https://nodejs.org/en/ ]
+````
+
 # Setup environment context
-* Update `.env` - setup file
-* Setup database parameters
 
-# Database migration
-
-* Goto source directory
-* Execute migration:
+* Clone GIT repo:
     ````
-    php artisan migrate
+    $ git clone https://github.com/nilesh369/ams2.git 
+    ````
+* Goto `ams2` folder: 
+    ````
+    $ cd ams2
+    ````
+* Copy `.env.example` - setup file as `.env` file
+    ````
+    $ cp .env.example .env
+    ````
+* Setup database parameters in .env: 
+    ````
+    DB_CONNECTION=mysql
+    DB_HOST=< SET DBSERVER >
+    DB_PORT=3306
+    DB_DATABASE=< SET DB >
+    DB_USERNAME=< SET DBUSER >
+    DB_PASSWORD=< SET DBPWD >
     ````
 
-# Database seeding
-````
-php artisan db:seed
-````
+# Installation & Execution script
+    $ chmod +x setup.sh
+    $ ./setup.sh 
 
-# Start API server
-````
-php artisan serve
-````
+# Server should start as `http://localhost:8000`
+
+# Navigate through: `http://localhost:8000`
+* Login as:
+    ````
+    Username: admin@ams.com
+    Password: 123456
+    ````
 
 # API Endpoints for Authentication and Registration
 ````
@@ -29,7 +51,7 @@ JSON data format for the athlete:
 {
     'name': String, // Full Name
     'email': String, // Unique Email
-    'password': String, // Password
+    'password': String, // Password (Min: 6 characters)
     'password_confirmation': String, // Confirm Password
 }
 
