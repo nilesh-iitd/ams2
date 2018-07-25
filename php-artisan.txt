@@ -2,13 +2,22 @@
 php artisan make:model Sport -m
 php artisan make:model Team -m
 php artisan make:model Athlete -m
+php artisan make:model ATS -m
 
 ## Create seeders
 php artisan make:seeder SportsTableSeeder
 php artisan make:seeder TeamsTableSeeder
 php artisan make:seeder AthletesTableSeeder
+php artisan make:seeder ATSTableSeeder
 
 ## Create controllers
 php artisan make:controller SportController
 php artisan make:controller TeamController
 php artisan make:controller AthleteController
+php artisan make:controller ATSController
+
+## Update autoload with recent models
+composer dump-autoload
+
+## completely rebuild the database
+php artisan migrate:refresh --seed
