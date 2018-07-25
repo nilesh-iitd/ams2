@@ -46,7 +46,7 @@ export default class Register extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      confirmPassword: this.state.confirmPassword
+      password_confirmation: this.state.confirmPassword
     }).then((res) => {
       let {api_token} = res.data.data;
       if (api_token) {
@@ -58,6 +58,7 @@ export default class Register extends Component {
       }
     }).catch((err) => {
       this.props.onFailure();
+      console.log(err);
       alert('Invalid login found!')
     });
     event.preventDefault();
@@ -70,7 +71,6 @@ export default class Register extends Component {
             <FormGroup controlId="name" bsSize="large">
               <ControlLabel>Name</ControlLabel>
               <FormControl
-                  autoFocus
                   type="text"
                   value={this.state.name}
                   onChange={this.handleChange}

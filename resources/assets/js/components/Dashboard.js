@@ -4,6 +4,7 @@ import Athlete from "./Athlete";
 import Team from "./Team";
 import Sport from "./Sport";
 import {Button, ButtonToolbar} from 'react-bootstrap';
+import ATS from "./ATS";
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -63,6 +64,9 @@ export default class Dashboard extends Component {
       case 3:
         comp = <Athlete token={this.props.token}/>;
         break;
+      case 4:
+        comp = <ATS token={this.props.token}/>;
+        break;
       default:
         comp = <Sport token={this.props.token}/>;
         break;
@@ -73,17 +77,20 @@ export default class Dashboard extends Component {
           <ButtonToolbar>
             <Button onClick={this.handleNav} value="1" bsStyle="primary"
                     bsSize="large">Sports</Button>
+            <span>&nbsp;&nbsp;&nbsp;</span>
             <Button onClick={this.handleNav} value="2" bsStyle="primary"
                     bsSize="large">Teams</Button>
+            <span>&nbsp;&nbsp;&nbsp;</span>
             <Button onClick={this.handleNav} value="3" bsStyle="primary"
                     bsSize="large">Athletes</Button>
+            <span>&nbsp;&nbsp;&nbsp;</span>
             <Button onClick={this.handleNav} value="4" bsStyle="primary"
-                    bsSize="large">ATS</Button>
+                    bsSize="large">Play</Button>
           </ButtonToolbar>
 
           <br/>
 
-          <Team token={this.props.token}/>
+          {comp}
         </div>
     );
   }

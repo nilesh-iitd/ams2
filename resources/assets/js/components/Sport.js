@@ -13,15 +13,11 @@ export default class Sport extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.props = newProps;
-    if (this.props.token) {
-      axios.get('/api/sports?api_token=' + this.props.token)
-          .then((res) => {
-            this.setState({sports: res.data});
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-    }
+    this.reloadData();
+  }
+
+  componentDidMount(){
+    this.reloadData();
   }
 
   reloadData() {
@@ -248,6 +244,7 @@ class SportTable extends React.Component {
           <table className="table table-bordered">
             <thead>
             <tr>
+              <th>ID</th>
               <th>Name</th>
               <th>View</th>
               <th>
@@ -308,6 +305,7 @@ class SportRow extends React.Component {
 
     return (
         <tr className="eachRow">
+          <td>{this.props.sport.id}</td>
           <EditableCell onSportTableUpdate={this.props.onSportTableUpdate}
                         cellData={{
                           "type": "name",

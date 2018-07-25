@@ -13,15 +13,11 @@ export default class Athlete extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.props = newProps;
-    if (this.props.token) {
-      axios.get('/api/athletes?api_token=' + this.props.token)
-          .then((res) => {
-            this.setState({athletes: res.data});
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-    }
+    this.reloadData();
+  }
+
+  componentDidMount() {
+    this.reloadData();
   }
 
   reloadData() {
@@ -81,7 +77,10 @@ export default class Athlete extends React.Component {
       axios.post('/api/athletes', {
         api_token: this.props.token,
         name: athlete.name,
-        dob: athlete.dob
+        dob: athlete.dob,
+        age: athlete.age,
+        height: athlete.height,
+        weight: athlete.weight
       })
           .then((res) => {
             var index = this.state.athletes.indexOf(athlete);
@@ -109,20 +108,21 @@ export default class Athlete extends React.Component {
       axios.put('/api/athletes/' + athlete.id, {
         api_token: this.props.token,
         name: athlete.name,
-        dob: athlete.dob
-      })
-          .then((res) => {
-            var index = this.state.athletes.indexOf(athlete);
-            this.state.athletes.splice(index, 1);
-            athlete.id = res.data.id;
-            this.state.athletes.unshift(athlete);
-            this.setState(this.state.athletes);
-            alert('Athlete record is successfully Updated!');
-          })
-          .catch((err) => {
-            alert('Failed to Update: ' + err.status);
-            console.log(err);
-          });
+        dob: athlete.dob,
+        age: athlete.age,
+        height: athlete.height,
+        weight: athlete.weight
+      }).then((res) => {
+        var index = this.state.athletes.indexOf(athlete);
+        this.state.athletes.splice(index, 1);
+        athlete.id = res.data.id;
+        this.state.athletes.unshift(athlete);
+        this.setState(this.state.athletes);
+        alert('Athlete record is successfully Updated!');
+      }).catch((err) => {
+        alert('Failed to Update: ' + err.status);
+        console.log(err);
+      });
     }
     else {
       alert('Invalid id and name found!');
@@ -160,7 +160,10 @@ export default class Athlete extends React.Component {
     var athlete = {
       id: 0,
       name: "",
-      dob: ""
+      dob: "",
+      age: 0,
+      height: 0,
+      weight: 0
     }
     this.state.athletes.unshift(athlete);
     this.setState(this.state.athletes);
@@ -250,20 +253,24 @@ class AthleteTable extends React.Component {
         return;
       }
       return (<AthleteRow onAthleteTableUpdate={onAthleteTableUpdate}
-                       athlete={athlete} onDelEvent={rowDel.bind(this)}
-                       onSaveEvent={rowSave.bind(this)}
-                       onUpdateEvent={rowUpdate.bind(this)}
-                       onSportEvent={rowSport.bind(this)}
-                       onTeamEvent={rowTeam.bind(this)}
-                       key={athlete.id}/>)
+                          athlete={athlete} onDelEvent={rowDel.bind(this)}
+                          onSaveEvent={rowSave.bind(this)}
+                          onUpdateEvent={rowUpdate.bind(this)}
+                          onSportEvent={rowSport.bind(this)}
+                          onTeamEvent={rowTeam.bind(this)}
+                          key={athlete.id}/>)
     });
     return (
         <div>
           <table className="table table-bordered">
             <thead>
             <tr>
+              <th>ID</th>
               <th>Name</th>
-              <th>Logo</th>
+              <th>DOB</th>
+              <th>Age</th>
+              <th>Height</th>
+              <th>Weight</th>
               <th>View</th>
               <th>
                 <Button type="button" onClick={this.props.onRowAdd}
@@ -323,17 +330,46 @@ class AthleteRow extends React.Component {
 
     return (
         <tr className="eachRow">
+          <td>{this.props.athlete.id}</td>
           <EditableCell onAthleteTableUpdate={this.props.onAthleteTableUpdate}
                         cellData={{
-                          "type": "name",
+                          control: "text",
+                          type: "name",
                           value: this.props.athlete.name,
-                          id: this.props.athlete.id
+                          id: this.props.athlete.id,
+                          style: {width:"15%"}
                         }}/>
           <EditableCell onAthleteTableUpdate={this.props.onAthleteTableUpdate}
                         cellData={{
-                          "type": "dob",
+                          control: "date",
+                          type: "dob",
                           value: this.props.athlete.dob,
-                          id: this.props.athlete.id
+                          id: this.props.athlete.id,
+                          style: {width:"5%"}
+                        }}/>
+          <EditableCell onAthleteTableUpdate={this.props.onAthleteTableUpdate}
+                        cellData={{
+                          control: "numeric",
+                          type: "age",
+                          value: this.props.athlete.age,
+                          id: this.props.athlete.id,
+                          style: {width:"5%"}
+                        }}/>
+          <EditableCell onAthleteTableUpdate={this.props.onAthleteTableUpdate}
+                        cellData={{
+                          control: "numeric",
+                          type: "height",
+                          value: this.props.athlete.height,
+                          id: this.props.athlete.id,
+                          style: {width:"5%"}
+                        }}/>
+          <EditableCell onAthleteTableUpdate={this.props.onAthleteTableUpdate}
+                        cellData={{
+                          control: "numeric",
+                          type: "weight",
+                          value: this.props.athlete.weight,
+                          id: this.props.athlete.id,
+                          style: {width:"5%"}
                         }}/>
           <td className="view-cell">
             <Button onClick={this.onTeamEvent.bind(this)} value="Teams"
@@ -357,9 +393,11 @@ class EditableCell extends React.Component {
   render() {
     return (
         <td>
-          <input type='text' name={this.props.cellData.type}
+          <input type={this.props.cellData.control}
+                 name={this.props.cellData.type}
                  id={this.props.cellData.id} value={this.props.cellData.value}
-                 onChange={this.props.onAthleteTableUpdate}/>
+                 onChange={this.props.onAthleteTableUpdate}
+          />
         </td>
     );
 

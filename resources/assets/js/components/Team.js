@@ -13,15 +13,11 @@ export default class Team extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.props = newProps;
-    if (this.props.token) {
-      axios.get('/api/teams?api_token=' + this.props.token)
-          .then((res) => {
-            this.setState({teams: res.data});
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-    }
+    this.reloadData();
+  }
+
+  componentDidMount(){
+    this.reloadData();
   }
 
   reloadData() {
@@ -186,7 +182,6 @@ export default class Team extends React.Component {
   };
 
   render() {
-
     return (
         <div className="card">
           <div className="card-header">
@@ -262,6 +257,7 @@ class TeamTable extends React.Component {
           <table className="table table-bordered">
             <thead>
             <tr>
+              <th>ID</th>
               <th>Name</th>
               <th>Logo</th>
               <th>View</th>
@@ -323,6 +319,7 @@ class TeamRow extends React.Component {
 
     return (
         <tr className="eachRow">
+          <td>{this.props.team.id}</td>
           <EditableCell onTeamTableUpdate={this.props.onTeamTableUpdate}
                         cellData={{
                           "type": "name",
