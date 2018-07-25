@@ -49,5 +49,13 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('ats', 'ATSController@store');
     Route::put('ats/{id}', 'ATSController@update');
     Route::delete('ats/{id}', 'ATSController@delete');
+
+    // ATS List by ID: API calls
+    Route::get('ats/ta/{id}', 'ATSController@showTeamByAthlete');
+    Route::get('ats/ts/{id}', 'ATSController@showTeamBySport');
+    Route::get('ats/at/{id}', 'ATSController@showAthleteByTeam');
+    Route::get('ats/as/{id}', 'ATSController@showAthleteBySport');
+    Route::get('ats/sa/{id}', 'ATSController@showSportByAthlete');
+    Route::get('ats/st/{id}', 'ATSController@showSportByTeam');
 });
 
