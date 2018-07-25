@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, ControlLabel, FormControl, FormGroup} from "react-bootstrap";
+import axios from 'axios';
 
 export default class Register extends Component {
   constructor(props) {
@@ -41,6 +42,24 @@ export default class Register extends Component {
   }
 
   handleSubmit(event) {
+    axios.post('/api/register', {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      confirmPassword: this.state.confirmPassword
+    }).then((res) => {
+      let {api_token} = res.data.data;
+      if (api_token) {
+        this.props.onSuccess(api_token);
+      }
+      else {
+        this.props.onFailure();
+        alert('Invalid token found!');
+      }
+    }).catch((err) => {
+      this.props.onFailure();
+      alert('Invalid login found!')
+    });
     event.preventDefault();
   }
 

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, ControlLabel, FormControl, FormGroup} from "react-bootstrap";
+import axios from 'axios';
 
 export default class Login extends Component {
   constructor(props) {
@@ -19,13 +20,29 @@ export default class Login extends Component {
     return this.state.email.length > 0 && this.state.password.length > 0;
   }
 
-  handleChange (event) {
+  handleChange(event) {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
-  handleSubmit (event) {
+  handleSubmit(event) {
+    axios.post('/api/login', {
+      email: this.state.email,
+      password: this.state.password
+    }).then((res) => {
+      let {api_token} = res.data.data;
+      if (api_token) {
+        this.props.onSuccess(api_token);
+      }
+      else {
+        this.props.onFailure();
+        alert('Invalid token found!');
+      }
+    }).catch((err) => {
+      this.props.onFailure();
+      alert('Invalid login found!')
+    });
     event.preventDefault();
   }
 
@@ -53,6 +70,7 @@ export default class Login extends Component {
             <Button
                 block
                 bsSize="large"
+                bsStyle="primary"
                 disabled={!this.validateForm()}
                 type="submit"
             >

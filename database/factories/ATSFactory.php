@@ -15,6 +15,6 @@ $factory->define(App\ATS::class, function (Faker $faker) {
       'dop' => $faker->unique()->date(),
       'aid' => $faker->numberBetween(1, 100),
       'tid' => $faker->numberBetween(1, 10),
-      'sid' => $faker->numberBetween(1, 2),
+      'sid' => $faker->numberBetween(1, 5),
     ];
 });
